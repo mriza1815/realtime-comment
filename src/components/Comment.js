@@ -39,7 +39,7 @@ const Comment = ({
   };
 
   return (
-    <div className="media-block pb-2">
+    <div className="media-block pb-2 mt-2">
       {isAdmin ? <Button type="delete" commentId={id} /> : null}
       <Avatar uid={uid} avatarId={avatarId} />
       <div className="media-body">

@@ -75,37 +75,35 @@ const Profile = ({ user, followings, reactions }) => {
   };
 
   return (
-    <div className="container bootdey">
-      <div className="col-md-12 bootstrap snippets">
-        <ProfileCard
-          profileInfo={profileInfo}
-          followerCount={followerCount}
-          selectedUserId={userId}
-          following={followings.includes(userId)}
-        />
-        <div className="panel">
-          <div className="panel-body">
-            {comments.length ? (
-              comments.map((comment) => (
-                <Comment
-                  {...comment}
-                  isMe={user?.uid === comment.uid}
-                  reactions={reactions}
-                  following={followings.includes(comment.uid)}
-                  reaction={
-                    reactions.find(
-                      (reaction) => reaction.commentId === comment.id
-                    )?.reaction ?? null
-                  }
-                />
-              ))
-            ) : (
-              <span className="text-info mt-4">{emptyCommentList}</span>
-            )}
-          </div>
+    <>
+      <ProfileCard
+        profileInfo={profileInfo}
+        followerCount={followerCount}
+        selectedUserId={userId}
+        following={followings.includes(userId)}
+      />
+      <div className="panel">
+        <div className="panel-body">
+          {comments.length ? (
+            comments.map((comment) => (
+              <Comment
+                {...comment}
+                isMe={user?.uid === comment.uid}
+                reactions={reactions}
+                following={followings.includes(comment.uid)}
+                reaction={
+                  reactions.find(
+                    (reaction) => reaction.commentId === comment.id
+                  )?.reaction ?? null
+                }
+              />
+            ))
+          ) : (
+            <span className="text-info mt-4">{emptyCommentList}</span>
+          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

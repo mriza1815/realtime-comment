@@ -40,28 +40,23 @@ const CommentDetail = ({ user, followings, reactions }) => {
   };
 
   return (
-    <div className="container bootdey">
-      <div className="col-md-12 bootstrap snippets">
-        <div className="panel">
-          <div className="panel-body">
-            {comment ? (
-              <Comment
-                {...comment}
-                isMe={user?.uid === comment?.uid}
-                reactions={reactions}
-                followings={followings}
-                currentUserUid={user?.uid}
-                following={followings.includes(comment.uid)}
-                replies={replies}
-                reaction={
-                  reactions.find(
-                    (reaction) => reaction.commentId === comment.id
-                  )?.reaction ?? null
-                }
-              />
-            ) : null}
-          </div>
-        </div>
+    <div className="panel">
+      <div className="panel-body">
+        {comment ? (
+          <Comment
+            {...comment}
+            isMe={user?.uid === comment?.uid}
+            reactions={reactions}
+            followings={followings}
+            currentUserUid={user?.uid}
+            following={followings.includes(comment.uid)}
+            replies={replies}
+            reaction={
+              reactions.find((reaction) => reaction.commentId === comment.id)
+                ?.reaction ?? null
+            }
+          />
+        ) : null}
       </div>
     </div>
   );

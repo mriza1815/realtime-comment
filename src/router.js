@@ -102,19 +102,20 @@ const RouterPage = ({
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/comment/:commentId" element={<CommentDetail />} />
-        <Route
-          path="/admin"
-          element={isAdmin ? <Admin /> : <Navigate to="/" />}
-        />
-        <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/profile/:userId" element={<Profile />} />
-      </Routes>
-    </Router>
+    <div className="container bootdey">
+      <div className="col-md-12 bootstrap snippets">
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/comment/:commentId" element={<CommentDetail />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/profile/:userId" element={<Profile />} />
+          </Routes>
+        </Router>
+      </div>
+    </div>
   );
 };
 

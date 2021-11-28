@@ -3,6 +3,7 @@ import FirebaseLibrary from "../../library/firebase";
 import { useToasts } from "react-toast-notifications";
 import { successMsg } from "../../library/constants";
 import { connect } from "react-redux";
+import { Textarea } from "@chakra-ui/react";
 
 const Admin = ({ restrictedWords }) => {
   const { saveRestrictedWords } = FirebaseLibrary();
@@ -26,8 +27,8 @@ const Admin = ({ restrictedWords }) => {
     <div className="panel">
       <div className="panel-body">
         <h2>Restricted Words</h2>
-        <textarea
-          className="form-control"
+        <Textarea
+          className="form-control mt-2"
           rows={2}
           placeholder="Enter restricted words"
           defaultValue={""}

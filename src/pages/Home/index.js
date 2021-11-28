@@ -111,71 +111,69 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
         onSave={emailAuth}
         handleClose={() => setModal(false)}
       />
-      <div className="container bootdey">
-        <div className="col-md-12 bootstrap snippets">
-          {user ? (
-            <ul className="nav nav-tabs">
-              <li className="nav-item">
-                <a
-                  className={`nav-link ${type === "all" ? "active" : ""}`}
-                  href="#"
-                  aria-current="page"
-                  onClick={() => setType("all")}
-                >
-                  All Comments
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className={`nav-link ${
-                    type === "onlyFollowing" ? "active" : ""
-                  }`}
-                  href="#"
-                  onClick={() => setType("onlyFollowing")}
-                >
-                  Only Following
-                </a>
-              </li>
-            </ul>
-          ) : null}
-          {!user ? (
-            <Login
-              googleLogin={() => socialAuth(googlePr)}
-              userData={{}}
-              facebookLogin={() => socialAuth(facebookPr)}
-              emailLogin={() => setModal(true)}
-            />
-          ) : null}
-          <WriteComment />
-          <div className="panel">
-            <div className="panel-body">
-              {commentList.length ? (
-                commentList.map((comment) => (
-                  <Comment
-                    key={`comment-${comment.id}`}
-                    {...comment}
-                    isMe={user?.uid === comment.uid}
-                    reactions={reactions}
-                    followings={followings}
-                    currentUserUid={user?.uid}
-                    following={followings.includes(comment.uid)}
-                    replies={comments.filter(
-                      (reply) => reply.parent === comment.id
-                    )}
-                    reaction={
-                      reactions.find(
-                        (reaction) => reaction.commentId === comment.id
-                      )?.reaction ?? null
-                    }
-                  />
-                ))
-              ) : (
-                <span className="text-info mt-4">{emptyCommentList}</span>
-              )}
-            </div>
+      <>
+        {user ? (
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <a
+                className={`nav-link ${type === "all" ? "active" : ""}`}
+                href="#"
+                aria-current="page"
+                onClick={() => setType("all")}
+              >
+                All Comments
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className={`nav-link ${
+                  type === "onlyFollowing" ? "active" : ""
+                }`}
+                href="#"
+                onClick={() => setType("onlyFollowing")}
+              >
+                Only Following
+              </a>
+            </li>
+          </ul>
+        ) : null}
+        {!user ? (
+          <Login
+            googleLogin={() => socialAuth(googlePr)}
+            userData={{}}
+            facebookLogin={() => socialAuth(facebookPr)}
+            emailLogin={() => setModal(true)}
+          />
+        ) : null}
+        <WriteComment />
+        <div className="panel">
+          <div className="panel-body">
+            {commentList.length ? (
+              commentList.map((comment) => (
+                <Comment
+                  key={`comment-${comment.id}`}
+                  {...comment}
+                  isMe={user?.uid === comment.uid}
+                  reactions={reactions}
+                  followings={followings}
+                  currentUserUid={user?.uid}
+                  following={followings.includes(comment.uid)}
+                  replies={comments.filter(
+                    (reply) => reply.parent === comment.id
+                  )}
+                  reaction={
+                    reactions.find(
+                      (reaction) => reaction.commentId === comment.id
+                    )?.reaction ?? null
+                  }
+                />
+              ))
+            ) : (
+              <span className="text-info mt-4">{emptyCommentList}</span>
+            )}
           </div>
         </div>
-      </div>
+      </>
     </>
   );
 };
