@@ -39,7 +39,7 @@ const Comment = ({
   };
 
   return (
-    <div className="media-block">
+    <div className="media-block pb-2">
       {isAdmin ? <Button type="delete" commentId={id} /> : null}
       <Avatar uid={uid} avatarId={avatarId} />
       <div className="media-body">
@@ -59,7 +59,7 @@ const Comment = ({
         </div>
         <p>{comment}</p>
         {!isMe ? (
-          <div className="pad-ver">
+          <div className="pad-ver pb-2">
             <div className="btn-group">
               <Button active={reaction === "like"} type="like" commentId={id} />
               <Button

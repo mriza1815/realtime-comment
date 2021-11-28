@@ -200,20 +200,18 @@ const FirebaseLibrary = () => {
     remove(ref(db, `reactions/${user.uid}-${commentId}`));
   };
 
-  const makeEmailLogin = (isLogin, name, email, password) => {
+  const makeEmailLogin = (alreadyMember, name, email, password) => {
+    const auth = getAuth();
     return new Promise((resolve, reject) => {
-      if (isLogin) {
-        signInWithEmailAndPassword(email, password)
+      if (alreadyMember) {
+        signInWithEmailAndPassword(auth, email, password)
           .then((res) => resolve(res.user))
           .catch(reject);
       } else {
-        createUserWithEmailAndPassword(email, password)
-          .then((res) => {
-            onAuthStateChanged((user) => {
-              user
-                .updateProfile({ displayName: name })
-                .then(() => resolve(user));
-            });
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("user", user);
           })
           .catch(reject);
       }

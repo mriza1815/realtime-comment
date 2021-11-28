@@ -60,14 +60,14 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
       });
   };
 
-  const emailAuth = (isLogin, name, email, password) => {
+  const emailAuth = (alreadyMember, name, email, password) => {
     setModal(false);
-    makeEmailLogin(isLogin, name, email, password)
+    makeEmailLogin(alreadyMember, name, email, password)
       .then((res) => {
         const mapUserData = prepareUserDataWithEmail(res);
         makeLogin(mapUserData);
         localStorage.setItem("userData", JSON.stringify(mapUserData));
-        addToast(isLogin ? loginSuccessMsg : registerSuccessMsg, {
+        addToast(alreadyMember ? loginSuccessMsg : registerSuccessMsg, {
           appearance: "success",
         });
       })
@@ -97,7 +97,7 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
     if (type === "onlyFollowing")
       commentList = commentList.filter(
         (comment) =>
-          comment.uid === user.uid || followings.includes(comment.uid)
+          comment.uid === user?.uid || followings.includes(comment.uid)
       );
     return commentList;
   };
@@ -113,27 +113,31 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
       />
       <div className="container bootdey">
         <div className="col-md-12 bootstrap snippets">
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a
-                class={`nav-link ${type === "all" ? "active" : ""}`}
-                href="#"
-                aria-current="page"
-                onClick={() => setType("all")}
-              >
-                All Comments
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class={`nav-link ${type === "onlyFollowing" ? "active" : ""}`}
-                href="#"
-                onClick={() => setType("onlyFollowing")}
-              >
-                Only Following
-              </a>
-            </li>
-          </ul>
+          {user ? (
+            <ul className="nav nav-tabs">
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${type === "all" ? "active" : ""}`}
+                  href="#"
+                  aria-current="page"
+                  onClick={() => setType("all")}
+                >
+                  All Comments
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className={`nav-link ${
+                    type === "onlyFollowing" ? "active" : ""
+                  }`}
+                  href="#"
+                  onClick={() => setType("onlyFollowing")}
+                >
+                  Only Following
+                </a>
+              </li>
+            </ul>
+          ) : null}
           {!user ? (
             <Login
               googleLogin={() => socialAuth(googlePr)}
@@ -148,6 +152,7 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
               {commentList.length ? (
                 commentList.map((comment) => (
                   <Comment
+                    key={`comment-${comment.id}`}
                     {...comment}
                     isMe={user?.uid === comment.uid}
                     reactions={reactions}
