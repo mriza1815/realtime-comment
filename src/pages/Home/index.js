@@ -18,7 +18,6 @@ import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import FormModal from "../../components/Modal";
 import { convertedArrFromObj } from "../../library/general-utils";
-import { Spinner } from "@chakra-ui/react";
 
 const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
   const [modal, setModal] = useState(false);
@@ -64,10 +63,11 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
 
   const emailAuth = (alreadyMember, name, email, password) => {
     setModal(false);
-    makeEmailLogin(alreadyMember, name, email, password)
+    makeEmailLogin(alreadyMember, email, password)
       .then((res) => {
-        const mapUserData = prepareUserDataWithEmail(res);
+        const mapUserData = prepareUserDataWithEmail(res, name);
         makeLogin(mapUserData);
+        saveUser(mapUserData);
         localStorage.setItem("userData", JSON.stringify(mapUserData));
         addToast(alreadyMember ? loginSuccessMsg : registerSuccessMsg, {
           appearance: "success",

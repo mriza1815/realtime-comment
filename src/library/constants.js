@@ -50,13 +50,17 @@ export const prepareUserData = (data) => ({
   avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
 });
 
-export const prepareUserDataWithEmail = (user) => ({
-  name: user.displayName || user.name || "Noname User",
-  displayName: makeShowName(user.displayName || user.name || "Noname User"),
-  token: (user.refreshToken && user.refreshToken) || null,
+export const prepareUserDataWithEmail = (user, name = "") => ({
+  name: user.displayName || user.name || name || "Noname User",
+  displayName: makeShowName(
+    user.displayName || user.name || name || "Noname User"
+  ),
+  token:
+    (user.refreshToken && user.refreshToken) || (user?.accessToken ?? null),
   email: user.email || null,
   uid: user.uid || null,
   isAdmin: adminEmails.includes(user.email),
+  avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
 });
 
 const makeShowName = (name) => {

@@ -53,17 +53,19 @@ const FormModal = (props) => {
               onChange={() => setAlreadyMember((prev) => !prev)}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel>Name</FormLabel>
-            <Input
-              ref={initialRef}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              size="md"
-              ref={initialRef}
-              placeholder="Name"
-            />
-          </FormControl>
+          {!alreadyMember ? (
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input
+                ref={initialRef}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                size="md"
+                ref={initialRef}
+                placeholder="Name"
+              />
+            </FormControl>
+          ) : null}
 
           <FormControl mt={4}>
             <FormLabel>Email</FormLabel>
@@ -71,34 +73,31 @@ const FormModal = (props) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               size="md"
-              type="email"
               placeholder="email"
             />
           </FormControl>
 
-          {!alreadyMember ? (
-            <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
-              <InputGroup size="md">
-                <Input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  pr="4.5rem"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                />
-                <InputRightElement width="4.5rem">
-                  <Button
-                    h="1.75rem"
-                    size="sm"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-          ) : null}
+          <FormControl mt={4}>
+            <FormLabel>Password</FormLabel>
+            <InputGroup size="md">
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                pr="4.5rem"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter>
