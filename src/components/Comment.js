@@ -57,7 +57,7 @@ const Comment = ({
             {timeDifference(timestamp)}
           </p>
         </div>
-        <p>{comment}</p>
+        <p className="pt-05 pb-05">{comment}</p>
         {!isMe ? (
           <div className="pad-ver pb-2">
             <div className="btn-group">
@@ -70,6 +70,7 @@ const Comment = ({
             </div>
             {!isReply ? (
               <Button
+                addClass="ml-1"
                 type="reply"
                 onClick={() => setOpenReplyArea(!openReplyArea)}
               />

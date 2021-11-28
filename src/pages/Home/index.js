@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Comment from "../../components/Comment";
 import WriteComment from "../../components/WriteComment";
+import LoadingContainer from "../../components/LoadingContainer";
 import FirebaseLibrary from "../../library/firebase";
 import { onValue, ref, getDatabase } from "firebase/database";
 import Login from "../../components/Login";
@@ -17,6 +18,7 @@ import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import FormModal from "../../components/Modal";
 import { convertedArrFromObj } from "../../library/general-utils";
+import { Spinner } from "@chakra-ui/react";
 
 const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
   const [modal, setModal] = useState(false);
@@ -148,29 +150,31 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
         <WriteComment />
         <div className="panel">
           <div className="panel-body">
-            {commentList.length ? (
-              commentList.map((comment) => (
-                <Comment
-                  key={`comment-${comment.id}`}
-                  {...comment}
-                  isMe={user?.uid === comment.uid}
-                  reactions={reactions}
-                  followings={followings}
-                  currentUserUid={user?.uid}
-                  following={followings.includes(comment.uid)}
-                  replies={comments.filter(
-                    (reply) => reply.parent === comment.id
-                  )}
-                  reaction={
-                    reactions.find(
-                      (reaction) => reaction.commentId === comment.id
-                    )?.reaction ?? null
-                  }
-                />
-              ))
-            ) : (
-              <span className="text-info mt-4">{emptyCommentList}</span>
-            )}
+            <LoadingContainer isLoading={loading}>
+              {commentList.length ? (
+                commentList.map((comment) => (
+                  <Comment
+                    key={`comment-${comment.id}`}
+                    {...comment}
+                    isMe={user?.uid === comment.uid}
+                    reactions={reactions}
+                    followings={followings}
+                    currentUserUid={user?.uid}
+                    following={followings.includes(comment.uid)}
+                    replies={comments.filter(
+                      (reply) => reply.parent === comment.id
+                    )}
+                    reaction={
+                      reactions.find(
+                        (reaction) => reaction.commentId === comment.id
+                      )?.reaction ?? null
+                    }
+                  />
+                ))
+              ) : (
+                <span className="text-info mt-4">{emptyCommentList}</span>
+              )}
+            </LoadingContainer>
           </div>
         </div>
       </>

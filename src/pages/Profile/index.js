@@ -7,10 +7,12 @@ import FirebaseLibrary from "../../library/firebase";
 import { emptyCommentList } from "../../library/constants";
 import { connect } from "react-redux";
 import { convertedArrFromObj } from "../../library/general-utils";
+import LoadingContainer from "../../components/LoadingContainer";
 
 const Profile = ({ user, followings, reactions }) => {
   let { userId } = useParams();
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [profileInfo, setProfileInfo] = useState(null);
   const [followerCount, setFollowerCount] = useState(0);
 
@@ -57,9 +59,16 @@ const Profile = ({ user, followings, reactions }) => {
   };
 
   const setUserComments = () => {
+    setLoading(true);
     getUserComment(userId)
-      .then(setComments)
-      .catch(() => setComments([]));
+      .then((data) => {
+        setLoading(false);
+        setComments(data);
+      })
+      .catch(() => {
+        setComments([]);
+        setLoading(false);
+      });
   };
 
   const setUserProfile = () => {
@@ -84,23 +93,25 @@ const Profile = ({ user, followings, reactions }) => {
       />
       <div className="panel">
         <div className="panel-body">
-          {comments.length ? (
-            comments.map((comment) => (
-              <Comment
-                {...comment}
-                isMe={user?.uid === comment.uid}
-                reactions={reactions}
-                following={followings.includes(comment.uid)}
-                reaction={
-                  reactions.find(
-                    (reaction) => reaction.commentId === comment.id
-                  )?.reaction ?? null
-                }
-              />
-            ))
-          ) : (
-            <span className="text-info mt-4">{emptyCommentList}</span>
-          )}
+          <LoadingContainer isLoading={loading}>
+            {comments.length ? (
+              comments.map((comment) => (
+                <Comment
+                  {...comment}
+                  isMe={user?.uid === comment.uid}
+                  reactions={reactions}
+                  following={followings.includes(comment.uid)}
+                  reaction={
+                    reactions.find(
+                      (reaction) => reaction.commentId === comment.id
+                    )?.reaction ?? null
+                  }
+                />
+              ))
+            ) : (
+              <span className="text-info mt-4">{emptyCommentList}</span>
+            )}
+          </LoadingContainer>
         </div>
       </div>
     </>

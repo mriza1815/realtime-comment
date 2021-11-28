@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Comment from "../../components/Comment";
+import LoadingContainer from "../../components/LoadingContainer";
 import { onValue, ref, getDatabase } from "firebase/database";
 import FirebaseLibrary from "../../library/firebase";
 import { useParams } from "react-router-dom";
@@ -42,21 +43,23 @@ const CommentDetail = ({ user, followings, reactions }) => {
   return (
     <div className="panel">
       <div className="panel-body">
-        {comment ? (
-          <Comment
-            {...comment}
-            isMe={user?.uid === comment?.uid}
-            reactions={reactions}
-            followings={followings}
-            currentUserUid={user?.uid}
-            following={followings.includes(comment.uid)}
-            replies={replies}
-            reaction={
-              reactions.find((reaction) => reaction.commentId === comment.id)
-                ?.reaction ?? null
-            }
-          />
-        ) : null}
+        <LoadingContainer isLoading={loading}>
+          {comment ? (
+            <Comment
+              {...comment}
+              isMe={user?.uid === comment?.uid}
+              reactions={reactions}
+              followings={followings}
+              currentUserUid={user?.uid}
+              following={followings.includes(comment.uid)}
+              replies={replies}
+              reaction={
+                reactions.find((reaction) => reaction.commentId === comment.id)
+                  ?.reaction ?? null
+              }
+            />
+          ) : null}
+        </LoadingContainer>
       </div>
     </div>
   );
