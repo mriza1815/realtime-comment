@@ -108,7 +108,7 @@ const FormModal = (props) => {
           >
             {alreadyMember ? "Login" : "Register"}
           </Button>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
