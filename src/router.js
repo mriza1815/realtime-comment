@@ -22,6 +22,7 @@ import {
   handleFollowerData,
   handleReactionData,
 } from "./library/general-utils";
+import Logout from "./components/Logout";
 
 const RouterPage = ({
   user,
@@ -104,6 +105,7 @@ const RouterPage = ({
   return (
     <div className="container bootdey">
       <div className="col-md-12 bootstrap snippets">
+        {user ? <Logout /> : null}
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
