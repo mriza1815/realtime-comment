@@ -53,7 +53,6 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
     getAllComments()
       .then((comments) => {
         setLoading(false);
-        console.log("comments", comments);
         setComments(comments);
       })
       .catch((e) => {
@@ -75,7 +74,6 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
             const mapUserData = prepareUserDataWithEmail(res, name);
             makeLogin(mapUserData);
             saveUser(mapUserData);
-            localStorage.setItem("userData", JSON.stringify(mapUserData));
             addToast(alreadyMember ? loginSuccessMsg : registerSuccessMsg, {
               appearance: "success",
             });
@@ -96,7 +94,6 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
             const mapUserData = prepareUserData(result);
             makeLogin(mapUserData);
             saveUser(mapUserData);
-            localStorage.setItem("userData", JSON.stringify(mapUserData));
             addToast(loginSuccessMsg, { appearance: "success" });
           })
           .catch(showBlockUserWarn);

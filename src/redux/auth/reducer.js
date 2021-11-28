@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
     case MAKE_LOGIN:
       return { ...state, user: action.payload, loggedIn: true };
     case MAKE_LOGOUT:
-      localStorage.removeItem("userData");
+      localStorage.removeItem("persist:realtimecomment:root");
       return { ...state, user: null, loggedIn: false };
     case SET_FOLLOWERS:
       const { followings, followerCount } = action.payload;

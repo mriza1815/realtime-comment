@@ -5,11 +5,19 @@ import { ToastProvider } from "react-toast-notifications";
 import { Provider } from "react-redux";
 import { store, persist } from "./redux/store";
 import { ChakraProvider } from "@chakra-ui/react";
+import { useEffect } from "react";
+import FirebaseLibrary from "./library/firebase";
 
 function App() {
+  const { initFirebase } = FirebaseLibrary();
+
+  useEffect(() => {
+    initFirebase();
+  }, []);
+
   return (
     <Provider store={store}>
-      <PersistGate persistor={persist}>
+      <PersistGate loading={null} persistor={persist}>
         <ToastProvider autoDismiss autoDismissTimeout={3000}>
           <ChakraProvider>
             <div className="app">

@@ -31,11 +31,6 @@ export const adminEmails = [
   "vkaraeren@gmail.com",
 ];
 
-export const isUserAdmin = () =>
-  (localStorage.getItem("userData") &&
-    JSON.parse(localStorage.getItem("userData")).isAdmin) ||
-  false;
-
 export const prepareUserData = (data) => ({
   name: data.user.displayName || data.user.name || "Noname User",
   displayName: makeShowName(

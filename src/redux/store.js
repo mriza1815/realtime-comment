@@ -1,8 +1,9 @@
-import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { createStore, combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import auth from "./auth/reducer";
+import { composeWithDevTools } from "redux-devtools-extension";
+import hardSet from "redux-persist/es/stateReconciler/hardSet";
 
 const combinedReducer = combineReducers({ auth });
 
@@ -13,12 +14,12 @@ const reducer = (state, action) => {
 const persistedReducers = persistReducer(
   {
     key: "realtimecomment:root",
-    storage: storage,
-    stateReconciler: autoMergeLevel2,
+    storage,
+    stateReconciler: hardSet,
   },
   reducer
 );
 
-export const store = createStore(persistedReducers);
+export const store = createStore(persistedReducers, composeWithDevTools());
 
 export const persist = persistStore(store);

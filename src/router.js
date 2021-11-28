@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { onValue, ref, getDatabase, off } from "firebase/database";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
@@ -25,7 +30,7 @@ import { blockedMsg } from "./library/constants";
 
 const RouterPage = ({
   user,
-  makeLogin,
+  isAdmin,
   setFollowers,
   setReactions,
   setRestrictedWords,
@@ -42,7 +47,6 @@ const RouterPage = ({
   const { addToast } = useToasts();
 
   useEffect(() => {
-    checkAuth();
     initData();
     initListeners();
   }, []);
@@ -99,13 +103,6 @@ const RouterPage = ({
     setBlockUsers(Object?.keys(blockUsersObj) ?? []);
   };
 
-  const checkAuth = () => {
-    const userData = localStorage?.getItem("userData") ?? null;
-    if (userData) {
-      makeLogin(JSON.parse(userData));
-    }
-  };
-
   const initFollowList = () => {
     getMyFollows()
       .then((follows) => setFollowers(follows))
@@ -142,7 +139,10 @@ const RouterPage = ({
             <Route path="/home" element={<Home />} />
             <Route path="/comment/:commentId" element={<CommentDetail />} />
             <Route path="/comments/:topicName" element={<TopicComments />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route
+              path="/admin"
+              element={isAdmin ? <Admin /> : <Navigate to="/" />}
+            />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/profile/:userId" element={<Profile />} />
           </Routes>

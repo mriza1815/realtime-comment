@@ -13,7 +13,6 @@ export const handleAllCommentData = (commentsObj) => {
   const arr = [];
   Object.keys(commentsObj).forEach((keyObj) => {
     Object.keys(commentsObj[keyObj]).forEach((key) => {
-      console.log("keyObj", key, commentsObj[keyObj]);
       arr.push(commentsObj[keyObj][key]);
     });
   });

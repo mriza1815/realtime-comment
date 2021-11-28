@@ -25,10 +25,6 @@ var commentListener;
 var firebaseApp;
 
 const FirebaseLibrary = () => {
-  useEffect(() => {
-    initFirebase();
-  }, []);
-
   const initFirebase = () => {
     if (!getApps().length) {
       firebaseApp = initializeApp(firebaseConfig);
@@ -323,6 +319,7 @@ const FirebaseLibrary = () => {
   };
 
   return {
+    initFirebase,
     googlePr,
     facebookPr,
     makeEmailLogin,
