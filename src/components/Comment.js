@@ -5,7 +5,7 @@ import Button from "./Button";
 import WriteComment from "./WriteComment";
 import { onValue, ref, getDatabase } from "firebase/database";
 import { Link } from "react-router-dom";
-import { timeDifference } from "../library/general-utils";
+import { timeDifference, sortByDescOrder } from "../library/general-utils";
 import { connect } from "react-redux";
 
 const Comment = ({
@@ -80,7 +80,7 @@ const Comment = ({
         <hr />
         {replies.length ? (
           <div>
-            {replies.map((reply) => (
+            {replies.sort(sortByDescOrder).map((reply) => (
               <Comment
                 {...reply}
                 isMe={currentUserUid === reply.uid}
