@@ -12,6 +12,7 @@ import {
   prepareUserData,
   prepareUserDataWithEmail,
   emptyCommentList,
+  blockedMsg,
 } from "../../library/constants";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
@@ -32,6 +33,7 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
     makeSocialLogin,
     getAllComments,
     saveUser,
+    checkUserIsBlock,
   } = FirebaseLibrary();
 
   useEffect(() => {
@@ -60,17 +62,25 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
       });
   };
 
+  const showBlockUserWarn = () => {
+    addToast(blockedMsg, { appearance: "error" });
+  };
+
   const emailAuth = (alreadyMember, name, email, password) => {
     setModal(false);
     makeEmailLogin(alreadyMember, email, password)
       .then((res) => {
-        const mapUserData = prepareUserDataWithEmail(res, name);
-        makeLogin(mapUserData);
-        saveUser(mapUserData);
-        localStorage.setItem("userData", JSON.stringify(mapUserData));
-        addToast(alreadyMember ? loginSuccessMsg : registerSuccessMsg, {
-          appearance: "success",
-        });
+        checkUserIsBlock(res.uid)
+          .then(() => {
+            const mapUserData = prepareUserDataWithEmail(res, name);
+            makeLogin(mapUserData);
+            saveUser(mapUserData);
+            localStorage.setItem("userData", JSON.stringify(mapUserData));
+            addToast(alreadyMember ? loginSuccessMsg : registerSuccessMsg, {
+              appearance: "success",
+            });
+          })
+          .catch(showBlockUserWarn);
       })
       .catch((e) => {
         console.log("catch", e.message);
@@ -81,11 +91,15 @@ const Home = ({ user, makeLogin, followings, reactions }) => {
   const socialAuth = (provider) => {
     makeSocialLogin(provider)
       .then((result) => {
-        const mapUserData = prepareUserData(result);
-        makeLogin(mapUserData);
-        saveUser(mapUserData);
-        localStorage.setItem("userData", JSON.stringify(mapUserData));
-        addToast(loginSuccessMsg, { appearance: "success" });
+        checkUserIsBlock(result.user.uid)
+          .then(() => {
+            const mapUserData = prepareUserData(result);
+            makeLogin(mapUserData);
+            saveUser(mapUserData);
+            localStorage.setItem("userData", JSON.stringify(mapUserData));
+            addToast(loginSuccessMsg, { appearance: "success" });
+          })
+          .catch(showBlockUserWarn);
       })
       .catch((e) => {
         console.log("socialAuth error", e);

@@ -92,6 +92,7 @@ const Admin = ({ restrictedWords }) => {
           <h2>Restricted Words</h2>
           <Textarea
             className="form-control mt-2"
+            style={{ fontSize: "13px" }}
             rows={2}
             placeholder="Enter restricted words"
             defaultValue={""}

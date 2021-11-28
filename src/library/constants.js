@@ -11,6 +11,7 @@ export const registerSuccessMsg = "Register process successfully completed";
 export const loginErrorMsg = "Something went wrong! Please try again";
 export const commentSuccessMsg = "Your comment sent successfully!";
 export const successMsg = "Process successfull!";
+export const blockedMsg = "You are blocked!";
 
 export const facebookLoginEnabled = false;
 export const attachImgEnabled = false;

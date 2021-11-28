@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { onValue, ref, getDatabase } from "firebase/database";
+import { onValue, ref, getDatabase, off } from "firebase/database";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
@@ -11,6 +11,7 @@ import {
   setFollowers,
   setReactions,
   setRestrictedWords,
+  makeLogout,
 } from "./redux/auth/action";
 import FirebaseLibrary from "./library/firebase";
 import {
@@ -19,26 +20,40 @@ import {
 } from "./library/general-utils";
 import Logout from "./components/Logout";
 import TopicComments from "./pages/TopicComments";
+import { useToasts } from "react-toast-notifications";
+import { blockedMsg } from "./library/constants";
 
 const RouterPage = ({
   user,
-  isAdmin,
   makeLogin,
   setFollowers,
   setReactions,
   setRestrictedWords,
+  makeLogout,
 }) => {
+  const [blockUsers, setBlockUsers] = useState([]);
   const {
     getMyFollows,
     getMyReactions,
     getAllRestrictedWords,
+    getCurrentUser,
   } = FirebaseLibrary();
+
+  const { addToast } = useToasts();
 
   useEffect(() => {
     checkAuth();
     initData();
     initListeners();
   }, []);
+
+  useEffect(() => {
+    if (user) listenBlockUsers();
+  }, [user]);
+
+  useEffect(() => {
+    checkAmIBlocked();
+  }, [blockUsers]);
 
   const initData = () => {
     initFollowList();
@@ -63,6 +78,25 @@ const RouterPage = ({
       let arr = snapshot?.val() ?? [];
       setRestrictedWords(arr?.join(" ") ?? "");
     });
+  };
+
+  const checkAmIBlocked = () => {
+    if (blockUsers.includes(user?.uid)) {
+      addToast(blockedMsg, { appearance: "error" });
+      makeLogout();
+    }
+  };
+
+  const listenBlockUsers = () => {
+    off(ref(getDatabase(), "blockedUsers"), onUserBlock);
+    getCurrentUser() &&
+      onValue(ref(getDatabase(), "blockedUsers"), onUserBlock);
+  };
+
+  const onUserBlock = (snapshot) => {
+    if (!getCurrentUser()) return;
+    let blockUsersObj = snapshot?.val() ?? {};
+    setBlockUsers(Object?.keys(blockUsersObj) ?? []);
   };
 
   const checkAuth = () => {
@@ -128,6 +162,7 @@ const mapDispatchToProps = {
   setFollowers,
   setReactions,
   setRestrictedWords,
+  makeLogout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RouterPage);

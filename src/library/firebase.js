@@ -124,6 +124,24 @@ const FirebaseLibrary = () => {
     });
   };
 
+  const checkUserIsBlock = (uid) => {
+    const dbRef = ref(getDatabase());
+    return new Promise((resolve, reject) => {
+      get(child(dbRef, `blockedUsers`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const blockedUsers = snapshot.val();
+            Object.keys(blockedUsers).includes(uid) ? reject() : resolve();
+          } else {
+            resolve();
+          }
+        })
+        .catch((error) => {
+          resolve();
+        });
+    });
+  };
+
   const getAllComments = (topicName = "") => {
     const dbRef = ref(getDatabase());
     return new Promise((resolve, reject) => {
@@ -329,6 +347,8 @@ const FirebaseLibrary = () => {
     handleUserList,
     blockUser,
     unBlockUser,
+    getCurrentUser,
+    checkUserIsBlock,
   };
 };
 
