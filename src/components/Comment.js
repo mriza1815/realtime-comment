@@ -58,8 +58,8 @@ const Comment = ({
           </p>
         </div>
         <p className="pt-05 pb-05">{comment}</p>
-        {!isMe ? (
-          <div className="pad-ver pb-2">
+        <div className="pad-ver pb-2">
+          {!isMe ? (
             <div className="btn-group">
               <Button active={reaction === "like"} type="like" commentId={id} />
               <Button
@@ -68,15 +68,15 @@ const Comment = ({
                 commentId={id}
               />
             </div>
-            {!isReply ? (
-              <Button
-                addClass="ml-1"
-                type="reply"
-                onClick={() => setOpenReplyArea(!openReplyArea)}
-              />
-            ) : null}
-          </div>
-        ) : null}
+          ) : null}
+          {!isReply ? (
+            <Button
+              addClass="ml-1"
+              type="reply"
+              onClick={() => setOpenReplyArea(!openReplyArea)}
+            />
+          ) : null}
+        </div>
         <hr />
         {replies.length ? (
           <div>
