@@ -4,7 +4,7 @@ import LoadingContainer from "../../components/LoadingContainer";
 import { onValue, ref, getDatabase } from "firebase/database";
 import FirebaseLibrary from "../../library/firebase";
 import { useParams } from "react-router-dom";
-import { convertedArrFromObj } from "../../library/general-utils";
+import { handleAllCommentData } from "../../library/general-utils";
 import { connect } from "react-redux";
 
 const CommentDetail = ({ user, followings, reactions }) => {
@@ -35,7 +35,7 @@ const CommentDetail = ({ user, followings, reactions }) => {
   const listenReplies = () => {
     onValue(ref(getDatabase(), "comments"), (snapshot) => {
       const data = snapshot.val();
-      const arr = convertedArrFromObj(data);
+      const arr = handleAllCommentData(data);
       setReplies(arr.filter((reply) => reply.parent == commentId));
     });
   };

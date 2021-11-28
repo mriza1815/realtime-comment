@@ -6,7 +6,10 @@ import { onValue, ref, getDatabase } from "firebase/database";
 import FirebaseLibrary from "../../library/firebase";
 import { emptyCommentList } from "../../library/constants";
 import { connect } from "react-redux";
-import { convertedArrFromObj } from "../../library/general-utils";
+import {
+  convertedArrFromObj,
+  handleAllCommentData,
+} from "../../library/general-utils";
 import LoadingContainer from "../../components/LoadingContainer";
 
 const Profile = ({ user, followings, reactions }) => {
@@ -41,7 +44,7 @@ const Profile = ({ user, followings, reactions }) => {
   const listenUserComments = () => {
     onValue(ref(getDatabase(), "comments"), (snapshot) => {
       let commentObj = snapshot?.val() ?? [];
-      let arr = convertedArrFromObj(commentObj);
+      let arr = handleAllCommentData(commentObj);
       setComments(
         arr.filter((comment) => !comment.parent && comment.uid === userId)
       );

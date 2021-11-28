@@ -24,23 +24,15 @@ const Comment = ({
   currentUserUid,
   isReply,
   isAdmin,
+  topicName,
 }) => {
   const [openReplyArea, setOpenReplyArea] = useState(false);
 
-  useEffect(() => {
-    listenReplies();
-  }, []);
-
-  const listenReplies = () => {
-    onValue(ref(getDatabase(), `comments/${id}/`), (snapshot) => {
-      const data = snapshot.val();
-      console.log("replies", data, `comments/${id}`);
-    });
-  };
-
   return (
     <div className="media-block pb-2 mt-2">
-      {isAdmin ? <Button type="delete" commentId={id} /> : null}
+      {isAdmin ? (
+        <Button type="delete" topicName={topicName} commentId={id} />
+      ) : null}
       <Avatar uid={uid} avatarId={avatarId} />
       <div className="media-body">
         <div className="mar-btm">
@@ -71,7 +63,7 @@ const Comment = ({
           ) : null}
           {!isReply ? (
             <Button
-              addClass="ml-1"
+              addClass={`${!isMe ? "ml-1" : ""}`}
               type="reply"
               onClick={() => setOpenReplyArea(!openReplyArea)}
             />
@@ -100,6 +92,7 @@ const Comment = ({
         <WriteComment
           onCommentSent={() => setOpenReplyArea(false)}
           parentId={id}
+          topicName={topicName}
         />
       ) : null}
     </div>

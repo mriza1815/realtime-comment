@@ -18,6 +18,7 @@ import {
   handleReactionData,
 } from "./library/general-utils";
 import Logout from "./components/Logout";
+import TopicComments from "./pages/TopicComments";
 
 const RouterPage = ({
   user,
@@ -106,6 +107,7 @@ const RouterPage = ({
             <Route exact path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/comment/:commentId" element={<CommentDetail />} />
+            <Route path="/comments/:topicName" element={<TopicComments />} />
             <Route path="/admin" element={<Admin />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/profile/:userId" element={<Profile />} />

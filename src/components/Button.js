@@ -3,7 +3,16 @@ import PropTypes from "prop-types";
 import FirebaseLibrary from "../library/firebase";
 import { connect } from "react-redux";
 
-const Button = ({ type, onClick, uid, commentId, active, user, addClass }) => {
+const Button = ({
+  type,
+  onClick,
+  uid,
+  commentId,
+  active,
+  user,
+  addClass,
+  topicName,
+}) => {
   const {
     followUser,
     unfollowUser,
@@ -85,7 +94,7 @@ const Button = ({ type, onClick, uid, commentId, active, user, addClass }) => {
     return (
       <a
         className="btn btn-sm btn-default btn-hover-success delete-btn"
-        onClick={() => deleteComment(commentId)}
+        onClick={() => deleteComment(topicName, commentId)}
       >
         <i className="fa fa-times" />
       </a>
@@ -118,6 +127,7 @@ Button.propTypes = {
   uid: PropTypes.string,
   reaction: PropTypes.string,
   addClass: PropTypes.string,
+  topicName: PropTypes.string,
   active: PropTypes.bool,
 };
 
@@ -127,6 +137,7 @@ Button.defaultProps = {
   reaction: null,
   active: false,
   addClass: "",
+  topicName: "",
 };
 
 const mapStateToProps = (state) => ({

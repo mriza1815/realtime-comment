@@ -8,6 +8,18 @@ export const convertedArrFromObj = (commentsObj) => {
   return arr.sort(sortByOrder);
 };
 
+export const handleAllCommentData = (commentsObj) => {
+  if (!commentsObj) return [];
+  const arr = [];
+  Object.keys(commentsObj).forEach((keyObj) => {
+    Object.keys(commentsObj[keyObj]).forEach((key) => {
+      console.log("keyObj", key, commentsObj[keyObj]);
+      arr.push(commentsObj[keyObj][key]);
+    });
+  });
+  return arr.sort(sortByOrder);
+};
+
 export const handleFollowerData = (followerObj) => {
   if (!followerObj) return { followings: [], followerCount: 0 };
   const user = getCurrentUser();

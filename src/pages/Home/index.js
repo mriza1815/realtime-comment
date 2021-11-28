@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Comment from "../../components/Comment";
-import WriteComment from "../../components/WriteComment";
 import LoadingContainer from "../../components/LoadingContainer";
 import FirebaseLibrary from "../../library/firebase";
 import { onValue, ref, getDatabase } from "firebase/database";
@@ -17,9 +16,9 @@ import {
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import FormModal from "../../components/Modal";
-import { convertedArrFromObj } from "../../library/general-utils";
+import { handleAllCommentData } from "../../library/general-utils";
 
-const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
+const Home = ({ user, makeLogin, followings, reactions }) => {
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
@@ -43,7 +42,7 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
   const listenComments = () => {
     onValue(ref(getDatabase(), "comments"), (snapshot) => {
       const data = snapshot.val();
-      setComments(convertedArrFromObj(data));
+      setComments(handleAllCommentData(data));
     });
   };
 
@@ -145,7 +144,6 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
             emailLogin={() => setModal(true)}
           />
         ) : null}
-        <WriteComment />
         <div className="panel">
           <div className="panel-body">
             <LoadingContainer isLoading={loading}>

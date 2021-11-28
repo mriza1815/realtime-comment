@@ -17,6 +17,7 @@ const WriteComment = ({
   parentId,
   onCommentSent,
   restrictedWords,
+  topicName,
 }) => {
   const [comment, setComment] = useState("");
   const { addComment } = FirebaseLibrary();
@@ -65,7 +66,7 @@ const WriteComment = ({
           timestamp: +new Date(),
           avatarId: user?.avatarId ?? 1,
         };
-        addComment(commentData);
+        addComment(commentData, topicName);
         addToast(commentSuccessMsg, { appearance: "success" });
         onCommentSent();
       })
@@ -111,6 +112,7 @@ const mapStateToProps = (state) => ({
 
 WriteComment.defaultProps = {
   isReply: false,
+  topicName: false,
   parentId: 0,
   onCommentSent: () => null,
 };
@@ -119,6 +121,7 @@ WriteComment.propTypes = {
   isReply: PropTypes.bool,
   parentId: PropTypes.number,
   onCommentSent: PropTypes.func,
+  topicName: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(WriteComment);

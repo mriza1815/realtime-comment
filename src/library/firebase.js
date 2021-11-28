@@ -16,6 +16,7 @@ import {
   handleFollowerData,
   handleReactionData,
   findLocalIp,
+  handleAllCommentData,
 } from "./general-utils";
 let googlePr;
 let facebookPr;
@@ -123,14 +124,18 @@ const FirebaseLibrary = () => {
     });
   };
 
-  const getAllComments = () => {
+  const getAllComments = (topicName = "") => {
     const dbRef = ref(getDatabase());
     return new Promise((resolve, reject) => {
-      get(child(dbRef, `comments`))
+      get(child(dbRef, `comments/${topicName}`))
         .then((snapshot) => {
           if (snapshot.exists()) {
             const commentsObj = snapshot.val();
-            resolve(convertedArrFromObj(commentsObj));
+            resolve(
+              !topicName
+                ? handleAllCommentData(commentsObj)
+                : convertedArrFromObj(commentsObj)
+            );
           } else {
             reject([]);
           }
@@ -189,15 +194,16 @@ const FirebaseLibrary = () => {
     });
   };
 
-  const deleteComment = (id) => {
+  const deleteComment = (topicName, id) => {
     const db = getDatabase();
-    remove(ref(db, `comments/${id}`));
+    remove(ref(db, `comments/${topicName}/${id}`));
   };
 
-  const addComment = (comment) => {
+  const addComment = (comment, topicName) => {
     const db = getDatabase();
-    set(ref(db, `comments/${comment.id}`), {
+    set(ref(db, `comments/${topicName}/${comment.id}`), {
       ...comment,
+      topicName,
     });
   };
 
