@@ -13,12 +13,10 @@ import { getDatabase, ref, set, get, child, remove } from "firebase/database";
 import { firebaseConfig } from "../firebase.config";
 import {
   convertedArrFromObj,
-  getRandom,
   handleFollowerData,
   handleReactionData,
   findLocalIp,
 } from "./general-utils";
-import { getCurrentUser } from "./redux-utils";
 let googlePr;
 let facebookPr;
 let database;
@@ -40,6 +38,43 @@ const FirebaseLibrary = () => {
       facebookPr = new FacebookAuthProvider();
       facebookPr.addScope("user_birthday");
     }
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+      } else {
+      }
+    });
+  };
+
+  const getCurrentUser = () => {
+    const auth = getAuth();
+    return auth.currentUser;
+  };
+
+  const getAllUsers = () => {
+    const dbRef = ref(getDatabase());
+    return new Promise((resolve, reject) => {
+      get(child(dbRef, `users`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const usersObj = snapshot.val();
+            resolve(handleUserList(usersObj));
+          } else {
+            reject([]);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  const handleUserList = (usersObj) => {
+    const currentUser = getCurrentUser();
+    return convertedArrFromObj(usersObj).filter(
+      (user) => user?.uid !== currentUser.uid
+    );
   };
 
   const saveUser = async (userData) => {
@@ -166,6 +201,16 @@ const FirebaseLibrary = () => {
     });
   };
 
+  const blockUser = (uid) => {
+    const db = getDatabase();
+    set(ref(db, `blockedUsers/${uid}`), uid);
+  };
+
+  const unBlockUser = (uid) => {
+    const db = getDatabase();
+    remove(ref(db, `blockedUsers/${uid}`));
+  };
+
   const followUser = (uid) => {
     const db = getDatabase();
     const user = getCurrentUser();
@@ -274,6 +319,10 @@ const FirebaseLibrary = () => {
     saveRestrictedWords,
     getAllRestrictedWords,
     getUserFollowerCount,
+    getAllUsers,
+    handleUserList,
+    blockUser,
+    unBlockUser,
   };
 };
 

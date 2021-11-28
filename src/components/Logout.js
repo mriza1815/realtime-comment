@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 const Logout = ({ makeLogout, user }) => {
   return (
-    <div className="logout-btn">
+    <div className="logout-btn mb-1">
       <div className="display-name mr-05">
         <span>{`Hello ${user.displayName}`}</span>
       </div>

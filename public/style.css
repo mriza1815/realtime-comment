@@ -28,6 +28,27 @@ body {
   transition: all 0.2s ease-out;
 }
 
+.user-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.user-card > .left-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-card > span {
+  align-self: center;
+}
+
+.user-block-switch {
+  align-self: flex-end;
+}
+
 a,
 button {
   cursor: pointer;
