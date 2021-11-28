@@ -18,9 +18,15 @@ const ProfileCard = ({
           <a className="media-left">
             <img
               className="img-circle img-sm"
+              style={{
+                visibility:
+                  user?.avatarId || profileInfo?.avatarId
+                    ? "visible"
+                    : "hidden",
+              }}
               alt="Profile Picture"
               src={`https://bootdey.com/img/Content/avatar/avatar${
-                isMe ? user.avatarId : "1"
+                isMe ? user.avatarId : profileInfo?.avatarId
               }.png`}
             />
           </a>
