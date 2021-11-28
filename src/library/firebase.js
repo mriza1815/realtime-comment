@@ -277,7 +277,6 @@ const FirebaseLibrary = () => {
           .then((userCredential) => {
             const user = userCredential.user;
             resolve(user);
-            console.log("user", user);
           })
           .catch((err) => {
             reject(err);

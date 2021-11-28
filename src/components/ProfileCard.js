@@ -11,6 +11,10 @@ const ProfileCard = ({
   following,
 }) => {
   const isMe = user?.uid === selectedUserId;
+  const data = isMe ? user : profileInfo;
+  const avatarPic =
+    data?.avatar ??
+    `https://bootdey.com/img/Content/avatar/avatar${data?.avatarId}.png`;
   return (
     <div className="panel">
       <div className="panel-body">
@@ -20,20 +24,16 @@ const ProfileCard = ({
               className="img-circle img-sm"
               style={{
                 visibility:
-                  user?.avatarId || profileInfo?.avatarId
-                    ? "visible"
-                    : "hidden",
+                  data?.avatarId || data?.avatar ? "visible" : "hidden",
               }}
-              alt="Profile Picture"
-              src={`https://bootdey.com/img/Content/avatar/avatar${
-                isMe ? user.avatarId : profileInfo?.avatarId
-              }.png`}
+              alt={data?.displayName}
+              src={avatarPic}
             />
           </a>
           <div className="media-body">
             <div className="mar-btm">
               <a className="btn-link text-semibold media-heading box-inline">
-                {profileInfo?.displayName ?? ""}
+                {data?.displayName ?? ""}
               </a>
               <p className="text-muted text-sm">
                 {!isMe ? (

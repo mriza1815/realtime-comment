@@ -25,6 +25,7 @@ const Comment = ({
   isReply,
   isAdmin,
   topicName,
+  avatar,
 }) => {
   const [openReplyArea, setOpenReplyArea] = useState(false);
 
@@ -33,7 +34,7 @@ const Comment = ({
       {isAdmin ? (
         <Button type="delete" topicName={topicName} commentId={id} />
       ) : null}
-      <Avatar uid={uid} avatarId={avatarId} />
+      <Avatar uid={uid} avatarId={avatarId} avatar={avatar} />
       <div className="media-body">
         <div className="mar-btm">
           <Link

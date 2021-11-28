@@ -43,6 +43,7 @@ export const prepareUserData = (data) => ({
   email: data.user.email || null,
   uid: data.user.uid || null,
   isAdmin: adminEmails.includes(data.user.email),
+  avatar: data.user?.photoURL ?? "",
   avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
 });
 
@@ -56,6 +57,7 @@ export const prepareUserDataWithEmail = (user, name = "") => ({
   email: user.email || null,
   uid: user.uid || null,
   isAdmin: adminEmails.includes(user.email),
+  avatar: "",
   avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
 });
 

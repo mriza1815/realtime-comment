@@ -65,6 +65,7 @@ const WriteComment = ({
           parent: parentId,
           timestamp: +new Date(),
           avatarId: user?.avatarId ?? 1,
+          avatar: user?.avatar ?? null,
         };
         addComment(commentData, topicName);
         addToast(commentSuccessMsg, { appearance: "success" });
