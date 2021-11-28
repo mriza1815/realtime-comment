@@ -119,7 +119,6 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
             <li className="nav-item">
               <a
                 className={`nav-link ${type === "all" ? "active" : ""}`}
-                href="#"
                 aria-current="page"
                 onClick={() => setType("all")}
               >
@@ -131,7 +130,6 @@ const Home = ({ user, makeLogin, makeLogout, followings, reactions }) => {
                 className={`nav-link ${
                   type === "onlyFollowing" ? "active" : ""
                 }`}
-                href="#"
                 onClick={() => setType("onlyFollowing")}
               >
                 Only Following

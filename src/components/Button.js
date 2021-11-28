@@ -74,7 +74,6 @@ const Button = ({ type, onClick, uid, commentId, active, user, addClass }) => {
     return (
       <a
         className={`btn btn-sm btn-default btn-hover-primary reply-btn ${addClass}`}
-        href="#"
         onClick={onClick}
       >
         Reply{" "}

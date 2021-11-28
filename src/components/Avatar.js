@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Avatar = ({ name, uid, avatarId }) => {
   return (
-    <Link to={`/profile/${uid}`} className="media-left" href="#">
+    <Link to={`/profile/${uid}`} className="media-left">
       <img
         className="img-circle img-sm"
         alt={name}

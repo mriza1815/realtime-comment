@@ -15,7 +15,7 @@ const ProfileCard = ({
     <div className="panel">
       <div className="panel-body">
         <div className="media-block">
-          <a className="media-left" href="#">
+          <a className="media-left">
             <img
               className="img-circle img-sm"
               alt="Profile Picture"
@@ -26,10 +26,7 @@ const ProfileCard = ({
           </a>
           <div className="media-body">
             <div className="mar-btm">
-              <a
-                href="#"
-                className="btn-link text-semibold media-heading box-inline"
-              >
+              <a className="btn-link text-semibold media-heading box-inline">
                 {profileInfo?.displayName ?? ""}
               </a>
               <p className="text-muted text-sm">

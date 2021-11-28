@@ -96,10 +96,7 @@ const WriteComment = ({
             <i className="fa fa-pencil fa-fw" /> Share
           </button>
           {attachImgEnabled ? (
-            <a
-              className="btn btn-trans btn-icon fa fa-camera add-tooltip"
-              href="#"
-            />
+            <a className="btn btn-trans btn-icon fa fa-camera add-tooltip" />
           ) : null}
         </div>
       </div>
