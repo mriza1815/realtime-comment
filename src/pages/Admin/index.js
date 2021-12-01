@@ -79,7 +79,7 @@ const Admin = ({ restrictedWords }) => {
 
   const submit = () => {
     let arr = words
-      .split(" ")
+      .split(",")
       .map((text) => text.replace(/(\r\n|\n|\r)/gm, ""));
     saveRestrictedWords(arr);
     addToast(successMsg, { appearance: "success" });

@@ -73,14 +73,14 @@ const RouterPage = ({
 
   const initRestrictedWords = () => {
     getAllRestrictedWords().then((res) => {
-      setRestrictedWords(res?.join(" ") ?? "");
+      setRestrictedWords(res?.join(",") ?? "");
     });
   };
 
   const listenRestrictedWords = () => {
     onValue(ref(getDatabase(), "restrictedWords"), (snapshot) => {
       let arr = snapshot?.val() ?? [];
-      setRestrictedWords(arr?.join(" ") ?? "");
+      setRestrictedWords(arr?.join(",") ?? "");
     });
   };
 
