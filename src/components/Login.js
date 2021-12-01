@@ -3,10 +3,12 @@ import {
   FacebookLoginButton,
   GoogleLoginButton,
   createButton,
+  TwitterLoginButton,
 } from "react-social-login-buttons";
 import {
   socialEmailButtonConfig,
   facebookLoginEnabled,
+  twitterLoginEnabled,
 } from "../library/constants";
 
 const EmailSocialButton = createButton(socialEmailButtonConfig);
@@ -22,6 +24,9 @@ const Login = (props) => {
           {" "}
           {facebookLoginEnabled ? (
             <FacebookLoginButton text="Facebook" onClick={facebookLogin} />
+          ) : null}
+          {twitterLoginEnabled ? (
+            <TwitterLoginButton text="Twittter" onClick={facebookLogin} />
           ) : null}
           <GoogleLoginButton text="Google" onClick={googleLogin} />
           <EmailSocialButton onClick={emailLogin} />

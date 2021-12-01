@@ -14,7 +14,8 @@ export const successMsg = "Process successfull!";
 export const blockedMsg = "You are blocked!";
 
 export const facebookLoginEnabled = false;
-export const attachImgEnabled = false;
+export const twitterLoginEnabled = false;
+export const attachImgEnabled = true;
 
 export const socialEmailButtonConfig = {
   text: "Email",

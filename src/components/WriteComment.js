@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import FirebaseLibrary from "../library/firebase";
 import { connect } from "react-redux";
@@ -10,6 +10,7 @@ import {
   attachImgEnabled,
   restrictedWordWarning,
 } from "../library/constants";
+import ImageModal from "./ImageModal";
 
 const WriteComment = ({
   isReply,
@@ -20,8 +21,11 @@ const WriteComment = ({
   topicName,
 }) => {
   const [comment, setComment] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
   const { addComment } = FirebaseLibrary();
   const { addToast } = useToasts();
+  const modalRef = useRef();
 
   const checkLogin = () => {
     return new Promise((resolve, reject) => {
@@ -39,12 +43,7 @@ const WriteComment = ({
     return new Promise((resolve, reject) => {
       if (!comment) resolve();
       let restrictedArr = restrictedWords.split(",");
-      let restrictedWordExist = comment.split(",").some((text) => {
-        console.log(
-          "restrictedArr",
-          restrictedArr,
-          text.replace(/(\r\n|\n|\r)/gm, "")
-        );
+      let restrictedWordExist = comment.split(/[\s,]+/).some((text) => {
         return restrictedArr.includes(text.replace(/(\r\n|\n|\r)/gm, ""));
       });
       (!restrictedWordExist && resolve()) || reject(restrictedWordWarning);
@@ -66,6 +65,7 @@ const WriteComment = ({
           timestamp: +new Date(),
           avatarId: user?.avatarId ?? 1,
           avatar: user?.avatar ?? null,
+          imageUrl: imageUrl,
         };
         addComment(commentData, topicName);
         addToast(commentSuccessMsg, { appearance: "success" });
@@ -77,32 +77,65 @@ const WriteComment = ({
   };
 
   return (
-    <div className={`panel ${isReply ? "comment-reply-input" : ""}`}>
-      <div className="panel-body">
-        <textarea
-          className="form-control"
-          rows={2}
-          placeholder="What are you thinking?"
-          defaultValue={""}
-          value={comment}
-          disabled={!user}
-          onKeyUp={(e) => e.keyCode === 13 && !e.shiftKey && submitComment()}
-          onChange={(e) => setComment(e.target.value)}
-        />
-        <div className="mar-top clearfix">
-          <button
-            className="btn btn-sm btn-primary pull-right"
-            type="submit"
-            onClick={submitComment}
-          >
-            <i className="fa fa-pencil fa-fw" /> Share
-          </button>
-          {attachImgEnabled ? (
-            <a className="btn btn-trans btn-icon fa fa-camera add-tooltip" />
+    <>
+      <ImageModal
+        ref={modalRef}
+        show={showImageModal}
+        onSave={(img) => {
+          setImageUrl(img);
+          setShowImageModal(false);
+        }}
+        handleClose={() => setShowImageModal(false)}
+      />
+      <div className={`panel ${isReply ? "comment-reply-input" : ""}`}>
+        <div className="panel-body">
+          <textarea
+            className="form-control"
+            rows={2}
+            placeholder="What are you thinking?"
+            defaultValue={""}
+            value={comment}
+            disabled={!user}
+            onKeyUp={(e) => e.keyCode === 13 && !e.shiftKey && submitComment()}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          {imageUrl ? (
+            <div className="thumb-container">
+              <a
+                onClick={() => {
+                  setImageUrl(null);
+                  modalRef.current.clearImageUrl();
+                }}
+              >
+                <i className="fa fa-times fa-fw" />
+              </a>
+              <img
+                src={imageUrl}
+                onError={() => {
+                  setImageUrl(null);
+                  modalRef.current.clearImageUrl();
+                }}
+              />
+            </div>
           ) : null}
+          <div className="mar-top clearfix">
+            <button
+              className="btn btn-sm btn-primary pull-right"
+              type="submit"
+              onClick={submitComment}
+            >
+              <i className="fa fa-pencil fa-fw" /> Share
+            </button>
+            {attachImgEnabled && user ? (
+              <a
+                className="btn btn-trans btn-icon fa fa-camera add-tooltip"
+                onClick={() => setShowImageModal(true)}
+              />
+            ) : null}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

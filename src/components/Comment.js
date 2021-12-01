@@ -26,6 +26,7 @@ const Comment = ({
   isAdmin,
   topicName,
   avatar,
+  imageUrl,
 }) => {
   const [openReplyArea, setOpenReplyArea] = useState(false);
 
@@ -51,6 +52,7 @@ const Comment = ({
           </p>
         </div>
         <p className="pt-05 pb-05">{comment}</p>
+        {imageUrl ? <img className="comment-img" src={imageUrl} /> : null}
         <div className="pad-ver pb-2">
           {!isMe ? (
             <div className="btn-group">
@@ -104,6 +106,7 @@ Comment.defaultProps = {
   person: "",
   comment: "",
   date: "",
+  imageUrl: "",
   isMe: false,
   following: false,
   isReply: false,
@@ -118,6 +121,7 @@ Comment.propTypes = {
   person: PropTypes.string,
   comment: PropTypes.string,
   date: PropTypes.string,
+  imageUrl: PropTypes.string,
   isMe: PropTypes.bool,
   following: PropTypes.bool,
   isReply: PropTypes.bool,
