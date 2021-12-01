@@ -12,7 +12,6 @@ import Profile from "./pages/Profile";
 import CommentDetail from "./pages/CommentDetail";
 import { connect } from "react-redux";
 import {
-  makeLogin,
   setFollowers,
   setReactions,
   setRestrictedWords,
@@ -23,10 +22,10 @@ import {
   handleFollowerData,
   handleReactionData,
 } from "./library/general-utils";
-import Logout from "./components/Logout";
 import TopicComments from "./pages/TopicComments";
 import { useToasts } from "react-toast-notifications";
 import { blockedMsg } from "./library/constants";
+import Auth from "./components/Auth";
 
 const RouterPage = ({
   user,
@@ -132,7 +131,7 @@ const RouterPage = ({
   return (
     <div className="container bootdey">
       <div className="col-md-12 bootstrap snippets">
-        {user ? <Logout /> : null}
+        <Auth />
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -158,7 +157,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  makeLogin,
   setFollowers,
   setReactions,
   setRestrictedWords,
