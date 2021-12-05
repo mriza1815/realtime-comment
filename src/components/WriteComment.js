@@ -41,7 +41,7 @@ const WriteComment = ({
 
   const checkRestrictedWords = () => {
     return new Promise((resolve, reject) => {
-      if (!comment) resolve();
+      if (!comment || !restrictedWords) resolve();
       let restrictedArr = restrictedWords.split(",");
       let restrictedWordExist = comment.split(/[\s,]+/).some((text) => {
         return restrictedArr.includes(text.replace(/(\r\n|\n|\r)/gm, ""));

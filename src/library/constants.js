@@ -45,25 +45,27 @@ export const prepareUserData = (data) => ({
   uid: data.user.uid || null,
   isAdmin: adminEmails.includes(data.user.email),
   avatar: data.user?.photoURL ?? "",
-  avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
+  avatarId: data?.avatarId ?? generateRandomAvatarId(),
 });
 
 export const prepareUserDataWithEmail = (user, name = "") => ({
-  name: user.displayName || user.name || name || "Noname User",
+  name: user?.displayName || user?.name || name || "Noname User",
   displayName: makeShowName(
-    user.displayName || user.name || name || "Noname User"
+    user?.displayName || user?.name || name || "Noname User"
   ),
-  token:
-    (user.refreshToken && user.refreshToken) || (user?.accessToken ?? null),
-  email: user.email || null,
-  uid: user.uid || null,
-  isAdmin: adminEmails.includes(user.email),
-  avatar: "",
-  avatarId: Math.floor(Math.random() * (8 - 1 + 1) + 1),
+  token: user?.refreshToken || user?.accessToken || null,
+  email: user?.email ?? null,
+  uid: user?.uid ?? null,
+  isAdmin: adminEmails.includes(user?.email),
+  avatar: user?.photoURL ?? "",
+  avatarId: user?.avatarId ?? generateRandomAvatarId(),
 });
 
 const makeShowName = (name) => {
   if (!name) return "Noname U.";
   let arr = name.split(" ");
-  return `${arr[0]} ${arr[1].charAt(0)}.`;
+  return arr.length > 1 ? `${arr[0]} ${arr[1].charAt(0)}.` : name;
 };
+
+export const generateRandomAvatarId = () =>
+  Math.floor(Math.random() * (8 - 1 + 1) + 1);

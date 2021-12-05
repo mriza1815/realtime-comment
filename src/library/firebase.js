@@ -8,6 +8,7 @@ import {
   FacebookAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import { getDatabase, ref, set, get, child, remove } from "firebase/database";
 import { firebaseConfig } from "../firebase.config";
@@ -18,6 +19,7 @@ import {
   findLocalIp,
   handleAllCommentData,
 } from "./general-utils";
+import { generateRandomAvatarId } from "./constants";
 let googlePr;
 let facebookPr;
 let database;
@@ -265,7 +267,7 @@ const FirebaseLibrary = () => {
     remove(ref(db, `reactions/${user.uid}-${commentId}`));
   };
 
-  const makeEmailLogin = (alreadyMember, email, password) => {
+  const makeEmailLogin = (alreadyMember, email, password, displayName) => {
     const auth = getAuth();
     return new Promise((resolve, reject) => {
       if (alreadyMember) {
@@ -276,7 +278,15 @@ const FirebaseLibrary = () => {
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
-            resolve(user);
+            const currentUser = auth?.currentUser;
+            const avatarId = generateRandomAvatarId();
+            if (currentUser) {
+              updateProfile(auth.currentUser, {
+                displayName,
+                photoURL: `https://bootdey.com/img/Content/avatar/avatar${avatarId}.png`,
+              });
+            }
+            resolve({ ...user, avatarId });
           })
           .catch((err) => {
             reject(err);

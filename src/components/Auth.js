@@ -53,7 +53,7 @@ const Auth = ({ user, makeLogin }) => {
 
   const emailAuth = (alreadyMember, name, email, password) => {
     setModal(false);
-    makeEmailLogin(alreadyMember, email, password)
+    makeEmailLogin(alreadyMember, email, password, name)
       .then((res) => {
         checkUserIsBlock(res.uid)
           .then(() => {
